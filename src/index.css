@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;700&display=swap');
 @media (prefers-color-scheme: light) {
   :root {
-    --background-color: #fff8f3;
+    --background-color: #022C43;
     --color-text: #5800ff;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background-color: #21325e;
-    --color-text: #f1d00a;
+    --background-color: #022C43;
+    --color-text: #21E6C1;
   }
 }
 

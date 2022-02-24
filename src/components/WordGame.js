@@ -6,22 +6,57 @@ class WordGame extends HTMLElement {
         this.attachShadow({
             mode: 'open'
         });
+        this.word = ' '.repeat(MAX_LETTER);
     }
     static get styles() {
         return /*css*/ `
         :host{      
-            --color: #f1d00a;
-          }
-        .containerWord{
-            display: flex;
+            --color: #115173;
+            --color-text: #29C7AC;
         }
+          .containerWord{
+                display: flex;
+          }
         .letter{
-           border:1px solid var(--color);; 
-           padding:1rem;
-           margin:3px; 
+            width: 40px;
+            height: 40px;
+            border:1px solid var(--color);; 
+            padding:1rem;
+            margin:3px; 
+            border-radius:5px;
+            overflow: hidden;
+            display:flex;
+            justify-content:center;
+            color: var(--color-text);
+            align-items:center;
         }
     `;
     }
+
+    toString() {
+        return this.word.replace(/ /g, "")
+    }
+
+    isEmpty() {
+        return this.word.includes(' ')
+    }
+
+    // checkWord() {
+    //     const wordEmpty = this.curren
+    // }
+
+    pushLetter(letter) {
+        const word = this.toString() + letter;
+        this.word = word.padEnd(MAX_LETTER, ' ');
+        this.render();
+    }
+
+    letterRemove() {
+        const word = this.toString().slice(0, -1);
+        this.word = word.padEnd(MAX_LETTER, ' ');
+        this.render();
+    }
+
 
     gameWord() {
         return this.word.split('')
@@ -35,7 +70,7 @@ class WordGame extends HTMLElement {
     }
 
     connectedCallback() {
-        this.word = this.getAttribute('word');
+        // this.word = this.getAttribute('word');
         this.render();
     }
 
