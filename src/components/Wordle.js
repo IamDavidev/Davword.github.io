@@ -99,7 +99,72 @@ class Wordle extends HTMLElement {
 
   checkWord() {
     const wordEmpty = this.wordCurrent.isEmpty();
-    wordEmpty && this.errorEmpty();
+    if (wordEmpty) {
+      this.errorEmpty();
+      return;
+    }
+    const word = this.wordCurrent.toString().toLowerCase();
+    const correctWord = WORDS_GAME.includes(word)
+    console.log(correctWord);
+
+    if (!correctWord) {
+      this.errorEmpty();
+      return;
+    }
+
+    const isCorrectWord = this.correctWord();
+
+    if (!isCorrectWord) {
+      this.nextTry();
+      return;
+    }
+
+    return this.winGame();
+  }
+
+  correctWord() {
+    const word = this.wordCurrent.toString();
+    const letterIncludes = word.split('');
+    const letterSecret = this.wordSecret.split('');
+
+    letterIncludes.forEach((letter, index) => {
+      const isExactLetter = letter === this.wordSecret[index];
+      isExactLetter && this.wordCurrent.setExactLetter(index);
+
+    })
+
+
+    letterIncludes.forEach((letter, index) => {
+      const exactLetter = letterSecret.includes(letter);
+      if (exactLetter) {
+        this.wordCurrent.setExistLetter(index);
+        const positionLetter = letterSecret.findIndex(lett => lett === letter);
+        letterSecret[positionLetter] = ' ';
+
+      }
+
+    })
+    this.wordCurrent.classList.add('env')
+    return this.wordCurrent.isSolved();
+
+  }
+  nextTry() {
+    this.wordCurrent = this.shadowRoot.querySelector('word-game[current]');
+    const nextry = this.wordCurrent.nextElementSibling;
+    if (nextry) {
+      nextry.setAttribute('current', ' ');
+      this.wordCurrent.removeAttribute('current');
+      this.wordCurrent = nextry;
+    }
+    return loseGame();
+  }
+
+  winGame() {
+
+  }
+
+  loseGame() {
+    alert('you lose')
   }
 
 

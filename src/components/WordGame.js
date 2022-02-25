@@ -41,9 +41,7 @@ class WordGame extends HTMLElement {
         return this.word.includes(' ')
     }
 
-    // checkWord() {
-    //     const wordEmpty = this.curren
-    // }
+    
 
     pushLetter(letter) {
         const word = this.toString() + letter;
@@ -55,6 +53,22 @@ class WordGame extends HTMLElement {
         const word = this.toString().slice(0, -1);
         this.word = word.padEnd(MAX_LETTER, ' ');
         this.render();
+    }
+    
+    isSolved(){
+       const allLetter = Array.from(this.shadowRoot.querySelectorAll('.letter'));
+       return allLetter.every(letter => letter.classList.contains('exact'));
+
+    }
+
+    setExactLetter(index) {
+        const allLetter = this.shadowRoot.querySelectorAll('.letter');
+        allLetter[index].classList.add('exact');
+    }
+    setExistLetter(index) {
+        const allLetter = this.shadowRoot.querySelectorAll('.letter');
+        allLetter[index].classList.add('exist');
+
     }
 
 
