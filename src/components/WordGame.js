@@ -13,8 +13,12 @@ class WordGame extends HTMLElement {
         :host{      
             --color: #115173;
             --color-text: #29C7AC;
+            --color-correct:#28FFBF;
+            --color-exited:#FFF338;
+            --color-wrong:#423F3E;
+
         }
-          .containerWord{
+        .containerWord{
                 display: flex;
           }
         .letter{
@@ -30,6 +34,15 @@ class WordGame extends HTMLElement {
             color: var(--color-text);
             align-items:center;
         }
+        .letter.wrong{
+            background-color: var(--color-wrong);
+        }
+        .letter.exist{
+            background: var(--color-exited);
+        }
+        .containerWord .letter.exact{
+            background: var(--color-correct);
+        }
     `;
     }
 
@@ -41,7 +54,7 @@ class WordGame extends HTMLElement {
         return this.word.includes(' ')
     }
 
-    
+
 
     pushLetter(letter) {
         const word = this.toString() + letter;
@@ -54,23 +67,37 @@ class WordGame extends HTMLElement {
         this.word = word.padEnd(MAX_LETTER, ' ');
         this.render();
     }
-    
-    isSolved(){
-       const allLetter = Array.from(this.shadowRoot.querySelectorAll('.letter'));
-       return allLetter.every(letter => letter.classList.contains('exact'));
+
+    isSolved() {
+        const allLetter = Array.from(this.shadowRoot.querySelectorAll('.letter'));
+        return allLetter.every(letter => letter.classList.contains('exact'));
 
     }
 
     setExactLetter(index) {
         const allLetter = this.shadowRoot.querySelectorAll('.letter');
         allLetter[index].classList.add('exact');
+        return allLetter[index].classList.remove('wrog');
     }
     setExistLetter(index) {
         const allLetter = this.shadowRoot.querySelectorAll('.letter');
+      
         allLetter[index].classList.add('exist');
+        return allLetter[index].classList.remove('wrog');
 
     }
+    
+    setWrongLetter(){
 
+        const allLetter = this.shadowRoot.querySelectorAll('.letter');
+        allLetter.forEach( letter => {
+            const isExactL = letter.classList.contains('exact');
+            const isExitL = letter.classList.contains('exist');
+            if(!isExactL && !isExitL){
+                letter.classList.add('wrong');
+            }
+        })
+    }
 
     gameWord() {
         return this.word.split('')

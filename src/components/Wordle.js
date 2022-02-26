@@ -1,4 +1,5 @@
 import WORDS_GAME from '../assets/words.json';
+import confetti from 'https://cdn.skypack.dev/canvas-confetti';
 
 const ALL_LETEER = [
   'A',
@@ -27,8 +28,8 @@ const ALL_LETEER = [
   'W',
   'X',
   'Y',
-  'Z'
-]
+  'Z',
+];
 class Wordle extends HTMLElement {
   constructor() {
     super();
@@ -59,23 +60,35 @@ class Wordle extends HTMLElement {
       align-items: center;
       min-height: 550px;
     } 
-    .messages{
 
-      display:none;
+    .containerMessages{
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding:1rem;
+
     }
-    `;
+    .messages{
+      box-shadow: 0 0 10px #000;
+      width:300px;
+      padding:1rem;
+      border-radius:1rem;
+      text-align:center;
+      color:#ECB365;
+    }
 
+    `;
   }
 
   gameStart() {
     const numRamdom = Math.floor(Math.random() * WORDS_GAME.length);
     this.wordSecret = WORDS_GAME[numRamdom];
     this.game_Over = false;
-
+    console.log(this.wordSecret);
   }
 
   letterPush(letter) {
-
     if (this.game_Over) return;
     const keyLetter = letter.toUpperCase();
 
@@ -88,13 +101,19 @@ class Wordle extends HTMLElement {
 
     if (this.wordCurrent.isEmpty() && ALL_LETEER.includes(keyLetter)) {
       this.wordCurrent.pushLetter(keyLetter);
-
     }
+  }
 
+  disconnectMessages() {
+    setInterval(() => {
+      this.shadowRoot.querySelector('.messages').innerHTML = '';
+    }, 5000);
   }
 
   errorEmpty() {
-    this.shadowRoot.querySelector('.messages').style.display = 'block';
+    this.shadowRoot.querySelector('.messages').innerHTML =
+      'la palabra esta vacia  o   no existe en el diccionario';
+    return this.disconnectMessages();
   }
 
   checkWord() {
@@ -104,7 +123,7 @@ class Wordle extends HTMLElement {
       return;
     }
     const word = this.wordCurrent.toString().toLowerCase();
-    const correctWord = WORDS_GAME.includes(word)
+    const correctWord = WORDS_GAME.includes(word);
     console.log(correctWord);
 
     if (!correctWord) {
@@ -123,30 +142,30 @@ class Wordle extends HTMLElement {
   }
 
   correctWord() {
-    const word = this.wordCurrent.toString();
-    const letterIncludes = word.split('');
-    const letterSecret = this.wordSecret.split('');
+    const word = this.wordCurrent.toString().toLowerCase();
+    const letterIncludes = word.toLowerCase().split('');
+    const letterSecret = this.wordSecret.toLowerCase().split('');
 
     letterIncludes.forEach((letter, index) => {
       const isExactLetter = letter === this.wordSecret[index];
       isExactLetter && this.wordCurrent.setExactLetter(index);
-
-    })
-
+    });
 
     letterIncludes.forEach((letter, index) => {
       const exactLetter = letterSecret.includes(letter);
       if (exactLetter) {
         this.wordCurrent.setExistLetter(index);
-        const positionLetter = letterSecret.findIndex(lett => lett === letter);
+        const positionLetter = letterSecret.findIndex(
+          (lett) => lett === letter
+        );
         letterSecret[positionLetter] = ' ';
-
       }
+    });
 
-    })
-    this.wordCurrent.classList.add('env')
+    this.wordCurrent.setWrongLetter();
+
+    this.wordCurrent.classList.add('env');
     return this.wordCurrent.isSolved();
-
   }
   nextTry() {
     this.wordCurrent = this.shadowRoot.querySelector('word-game[current]');
@@ -156,23 +175,28 @@ class Wordle extends HTMLElement {
       this.wordCurrent.removeAttribute('current');
       this.wordCurrent = nextry;
     }
-    return loseGame();
+    return this.loseGame();
   }
 
   winGame() {
-
+    this.shadowRoot.querySelector('.messages').innerHTML = 'ganaste :)';
+    this.disconnectMessages();
+    confetti();
+    return (this.game_Over = true);
   }
 
   loseGame() {
-    alert('you lose')
+    this.shadowRoot.querySelector('.messages').innerHTML =
+      'fallaste :( sigue intentado';
+    return this.disconnectMessages();
   }
-
 
   connectedCallback() {
     this.render();
     this.wordCurrent = this.shadowRoot.querySelector('word-game[current]');
-    document.addEventListener('keyup', e => this.letterPush(e.key));
-    // d 
+    document.addEventListener('keyup', (e) => this.letterPush(e.key));
+    // d
+    console.log(this.wordSecret);
   }
 
   render() {
@@ -189,8 +213,10 @@ class Wordle extends HTMLElement {
                 <word-game ></word-game>
                 <word-game ></word-game>
             </div>
-            <div class='messages'>
-                la palabra como minimo es de 5 letras 
+            <div class="containerMessages">
+              <div class='messages'>
+             
+             </div>
             </div>
      </div>
     `;
