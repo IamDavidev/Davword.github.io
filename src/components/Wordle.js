@@ -1,4 +1,4 @@
-import WORDS_GAME from '../assets/words.json';
+import WORDS_GAME from '../assets/Words_Game.json';
 import confetti from 'https://cdn.skypack.dev/canvas-confetti';
 
 const ALL_LETEER = [
@@ -84,7 +84,8 @@ class Wordle extends HTMLElement {
   gameStart() {
     const numRamdom = Math.floor(Math.random() * WORDS_GAME.length);
     this.wordSecret = WORDS_GAME[numRamdom];
-    this.game_Over = false;
+    this.wordAcent = this.wordSecret.match(/[az\u00E0-\u00FC]+/);
+    console.log(this.wordAcent);
     console.log(this.wordSecret);
   }
 
@@ -207,7 +208,7 @@ class Wordle extends HTMLElement {
                 Wordle  
             </h1>
             <div class="renderWords">
-                <word-game current ></word-game>
+              <word-game current ></word-game>
                 <word-game ></word-game>
                 <word-game ></word-game>
                 <word-game ></word-game>
