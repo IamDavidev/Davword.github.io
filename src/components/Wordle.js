@@ -1,4 +1,4 @@
-import WORDS_GAME from '../assets/Words_Game.json';
+import WORDS_GAME from '../assets/words.json';
 import confetti from 'https://cdn.skypack.dev/canvas-confetti';
 
 const ALL_LETEER = [
@@ -81,13 +81,13 @@ class Wordle extends HTMLElement {
     `;
   }
 
+  // function para iniciar y tener una palabra aleatoria 
   gameStart() {
     const numRamdom = Math.floor(Math.random() * WORDS_GAME.length);
     this.wordSecret = WORDS_GAME[numRamdom];
-    this.wordAcent = this.wordSecret.match(/[az\u00E0-\u00FC]+/);
-    console.log(this.wordAcent);
-    console.log(this.wordSecret);
+    this.game_Over = false;
   }
+
 
   letterPush(letter) {
     if (this.game_Over) return;
@@ -105,15 +105,17 @@ class Wordle extends HTMLElement {
     }
   }
 
+  //desaperecer los mensajes 
   disconnectMessages() {
     setInterval(() => {
       this.shadowRoot.querySelector('.messages').innerHTML = '';
     }, 5000);
   }
 
+  // error
   errorEmpty() {
     this.shadowRoot.querySelector('.messages').innerHTML =
-      'la palabra esta vacia  o   no existe en el diccionario';
+      'No existe en el diccionario';
     return this.disconnectMessages();
   }
 
@@ -142,6 +144,7 @@ class Wordle extends HTMLElement {
     return this.winGame();
   }
 
+
   correctWord() {
     const word = this.wordCurrent.toString().toLowerCase();
     const letterIncludes = word.toLowerCase().split('');
@@ -168,6 +171,8 @@ class Wordle extends HTMLElement {
     this.wordCurrent.classList.add('env');
     return this.wordCurrent.isSolved();
   }
+
+
   nextTry() {
     this.wordCurrent = this.shadowRoot.querySelector('word-game[current]');
     const nextry = this.wordCurrent.nextElementSibling;
@@ -187,8 +192,7 @@ class Wordle extends HTMLElement {
   }
 
   loseGame() {
-    this.shadowRoot.querySelector('.messages').innerHTML =
-      'fallaste :( sigue intentado';
+    this.shadowRoot.querySelector('.messages').innerHTML = 'fallaste :( sigue intentado';
     return this.disconnectMessages();
   }
 
