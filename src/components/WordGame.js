@@ -11,10 +11,10 @@ class WordGame extends HTMLElement {
     static get styles() {
         return /*css*/ `
         :host{      
-            --color: #115173;
-            --color-text: #29C7AC;
-            --color-correct:#28FFBF;
-            --color-exited:#FFF338;
+            --color: #fff;
+            --color-text: #fff;
+            --color-correct:#4E9F3D;
+            --color-exited:#ECB365;
             --color-wrong:#423F3E;
 
         }
@@ -24,7 +24,7 @@ class WordGame extends HTMLElement {
         .letter{
             width: 40px;
             height: 40px;
-            border:1px solid var(--color);; 
+            border:2px solid #000; 
             padding:1rem;
             margin:3px; 
             border-radius:5px;
@@ -81,19 +81,19 @@ class WordGame extends HTMLElement {
     }
     setExistLetter(index) {
         const allLetter = this.shadowRoot.querySelectorAll('.letter');
-      
+
         allLetter[index].classList.add('exist');
         return allLetter[index].classList.remove('wrog');
 
     }
-    
-    setWrongLetter(){
+
+    setWrongLetter() {
 
         const allLetter = this.shadowRoot.querySelectorAll('.letter');
-        allLetter.forEach( letter => {
+        allLetter.forEach(letter => {
             const isExactL = letter.classList.contains('exact');
             const isExitL = letter.classList.contains('exist');
-            if(!isExactL && !isExitL){
+            if (!isExactL && !isExitL) {
                 letter.classList.add('wrong');
             }
         })

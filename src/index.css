@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;700&display=swap');
 @media (prefers-color-scheme: light) {
   :root {
-    --background-color: #022C43;
+    --background-color: #022c43;
     --color-text: #5800ff;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background-color: #022C43;
-    --color-text: #21E6C1;
+    --background-color: #022c43;
+    --color-text: #ffffff;
   }
 }
 
@@ -28,6 +28,18 @@ body {
 }
 
 main {
-  background: var(--background-color);
+  background: #0f0c29; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #24243e,
+    #302b63,
+    #0f0c29
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #24243e,
+    #302b63,
+    #0f0c29
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   color: var(--color-text);
 }

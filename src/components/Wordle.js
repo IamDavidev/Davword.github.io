@@ -44,6 +44,10 @@ class Wordle extends HTMLElement {
     }
     .containerGame{
       min-height: 100vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
     }
     h1 {
       margin:0;
@@ -51,7 +55,7 @@ class Wordle extends HTMLElement {
       text-align:center;
       letter-spacing: 1rem;
       text-transform:uppercase;
-      border-bottom:1px solid #115173;
+
     }
     .renderWords{
       flex-direction: column;
@@ -114,8 +118,6 @@ class Wordle extends HTMLElement {
 
   // error
   errorEmpty() {
-    this.shadowRoot.querySelector('.messages').innerHTML =
-      'No existe en el diccionario';
     return this.disconnectMessages();
   }
 
@@ -192,8 +194,7 @@ class Wordle extends HTMLElement {
   }
 
   loseGame() {
-    this.shadowRoot.querySelector('.messages').innerHTML = 'fallaste :( sigue intentado';
-    return this.disconnectMessages();
+    alert('perdiste :(');
   }
 
   connectedCallback() {
@@ -218,11 +219,12 @@ class Wordle extends HTMLElement {
                 <word-game ></word-game>
                 <word-game ></word-game>
             </div>
-            <div class="containerMessages">
-              <div class='messages'>
-             
-             </div>
-            </div>
+            <span>
+              by <span>
+              #itsDavidev 
+              </span>
+              (David Lezama)
+            </span>
      </div>
     `;
   }
